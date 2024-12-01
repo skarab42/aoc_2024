@@ -1,21 +1,9 @@
 import gleam/int
 import gleam/list
 import gleam/result
-import gleam/string
 
 import input_1
-
-fn split_lines(input: String) -> List(String) {
-  input
-  |> string.trim
-  |> string.split(on: "\n")
-}
-
-fn split_values(input: String) -> List(String) {
-  input
-  |> string.trim
-  |> string.split(on: "   ")
-}
+import util
 
 fn split_list(
   lines: List(String),
@@ -25,15 +13,16 @@ fn split_list(
   case lines {
     [] -> Ok(#(left, right))
     [first, ..lines] -> {
-      let values = split_values(first)
+      let values =
+        util.trim_split(first, "   ")
+        |> list.map(int.parse)
+        |> result.all
+
+      use values <- result.then(values)
 
       case values {
-        [left_val, right_val] -> {
-          use lv <- result.then(int.parse(left_val))
-          use rv <- result.then(int.parse(right_val))
-
-          split_list(lines, [lv, ..left], [rv, ..right])
-        }
+        [left_val, right_val] ->
+          split_list(lines, [left_val, ..left], [right_val, ..right])
         _ -> panic as "should have two values"
       }
     }
@@ -41,7 +30,7 @@ fn split_list(
 }
 
 fn parse_list(input: String) {
-  split_lines(input) |> split_list([], [])
+  util.split_lines(input) |> split_list([], [])
 }
 
 fn pop_both(left: List(Int), right: List(Int)) {
