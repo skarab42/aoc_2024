@@ -19,10 +19,10 @@ pub fn part_1_test() {
 
 pub fn example_2_test() {
   day_2.example_2()
-  |> should.equal(42)
+  |> should.equal(4)
 }
 
 pub fn part_2_test() {
   day_2.part_2()
-  |> should.equal(42)
+  |> should.equal(692)
 }
