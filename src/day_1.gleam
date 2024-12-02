@@ -13,12 +13,7 @@ fn split_list(
   case lines {
     [] -> Ok(#(left, right))
     [first, ..lines] -> {
-      let values =
-        util.trim_split(first, "   ")
-        |> list.map(int.parse)
-        |> result.all
-
-      use values <- result.then(values)
+      use values <- result.then(util.str_to_int_list(first, "   "))
 
       case values {
         [left_val, right_val] ->
