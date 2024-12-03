@@ -20,3 +20,10 @@ pub fn str_to_int_list(input: String, on: String) -> Result(List(Int), Nil) {
   |> list.map(int.parse)
   |> result.all
 }
+
+pub fn list_sum(values: List(Int)) -> Int {
+  case values {
+    [] -> 0
+    [head, ..tail] -> head + list_sum(tail)
+  }
+}
